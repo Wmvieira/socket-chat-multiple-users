@@ -1,4 +1,7 @@
 import java.net.Socket;
+
+import login.LoginPage;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
@@ -9,8 +12,10 @@ public class RunClient {
     Socket s;
 
     public static void main(String args[]) {
-        RunClient rs = new RunClient();
-        rs.startClient();
+        LoginPage.createLoginPage();
+
+        // RunClient rs = new RunClient();
+        // rs.startClient();
     }
 
     public void startClient() {
