@@ -3,22 +3,14 @@ import java.util.List;
 
 public class User {
     public String nickName;
-    public int id;
-    
-    private static int curUser = 0; 
-    private static List<User> users = new ArrayList<User>();
+    public ServerThread serverThread;
 
-    public User(String nickName) {
-        this.nickName = nickName;
-        this.id = newUserId();
-        addToList(this);
+    private static List<User> connectedUsers = new ArrayList<User>();
+
+    public User(ServerThread serverThread) {
+        this.serverThread = serverThread;
+        connectedUsers.add(this);
+        System.out.println("Conexões: " + connectedUsers.size());
     }
 
-    private static int newUserId() {
-        return curUser +=1;
-    }
-
-    private static void addToList(User u) {
-        users.add(u);
-    }
 }

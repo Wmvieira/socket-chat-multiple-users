@@ -1,5 +1,4 @@
 import java.net.Socket;
-
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
@@ -11,15 +10,14 @@ public class RunClient {
 
     public static void main(String args[]) {
         RunClient rs = new RunClient();
-        rs.startClient(args[0], Integer.parseInt(args[1]));
+        rs.startClient();
     }
 
-    public void startClient(String host, int port) {
+    public void startClient() {
         try {
-            s = new Socket(host, port);
-            ClientThread ct = new ClientThread(s);
-            ct.setup();
-            ct.start();
+            s = new Socket("localhost", 8084);
+            new ClientThread(s);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

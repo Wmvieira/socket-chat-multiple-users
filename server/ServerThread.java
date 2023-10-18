@@ -9,41 +9,45 @@ public class ServerThread implements Runnable {
     PrintWriter out;
     BufferedReader in;
 
-    public ServerThread(Socket s){
+    public ServerThread(Socket s) {
         this.s = s;
+        connect();
     }
 
-    public void setup(){
-        try{
-            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            out = new PrintWriter(s.getOutputStream());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void start(){
-        t = new Thread(this);
-        t.start();
-    }
-
-    public void sendMsg(String msg){
+    public void sendMsgs(String msg) {
         out.println(msg);
         out.flush();
     }
 
     @Override
     public void run() {
-        try{
-            String msg = in.readLine();
-            String msgPartes[] = msg.split(" ");
-            int nEchos = Integer.parseInt(msgPartes[msgPartes.length - 1]);
-            for (int i = 0; i < nEchos; i++) {
-                sendMsg(msg);
+        try {
+            while (true) {
+                String msg = in.readLine();
+                System.out.println(msg);
+                sendMsgs(msg);
             }
-            out.close();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }   
+        }
+    }
+
+    private void connect() {
+        setup();
+        start();
+    }
+
+    private void setup() {
+        try {
+            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            out = new PrintWriter(s.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void start() {
+        t = new Thread(this);
+        t.start();
     }
 }

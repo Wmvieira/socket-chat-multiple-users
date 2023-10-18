@@ -2,23 +2,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class RunServer {
-    public static void main(String args[]){
+    public static void main(String args[]) {
         RunServer rs = new RunServer();
         rs.startServer();
-
-        new User("A");
-        new User("B");
-        new User("C");
     }
 
-    public void startServer(){
+    public void startServer() {
         try {
             ServerSocket ss = new ServerSocket(8084);
-            while(true){
+            while (true) {
                 Socket s = ss.accept();
-                ServerThread st = new ServerThread(s);
-                st.setup();
-                st.start();
+                new User(new ServerThread(s));
             }
         } catch (Exception e) {
             e.printStackTrace();
