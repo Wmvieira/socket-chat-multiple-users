@@ -1,7 +1,11 @@
+import message.GetUsersMessage;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerThread implements Runnable {
     Socket s;
@@ -14,8 +18,17 @@ public class ServerThread implements Runnable {
         connect();
     }
 
+    public void AllUsers() {
+        List<String> userNames = new ArrayList<>();
+        for (User user : User.connectedUsers) {
+            userNames.add(user.nickName);
+        }
+        sendMsgs(new GetUsersMessage(userNames).getMessageDetails());
+    }
+
     public void sendMsgs(String msg) {
         out.println(msg);
+
         out.flush();
     }
 
@@ -25,7 +38,9 @@ public class ServerThread implements Runnable {
             while (true) {
                 String msg = in.readLine();
                 System.out.println(msg);
+
                 sendMsgs(msg);
+                AllUsers();
             }
         } catch (Exception ex) {
             ex.printStackTrace();

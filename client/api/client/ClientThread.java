@@ -1,3 +1,5 @@
+package api.client;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -17,15 +19,9 @@ public class ClientThread implements Runnable {
         connect();
     }
 
-    public void sendMsgs() {
-        try {
-            while (true) {
-                out.println(new LoginMessage(inKey.readLine()).getMessageDetails());
-                out.flush();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void sendMessage(Message message) {
+        out.println(message.toMessageString());
+        out.flush();
     }
 
     @Override
@@ -43,7 +39,6 @@ public class ClientThread implements Runnable {
     private void connect() {
         setup();
         start();
-        sendMsgs();
     }
 
     private void setup() {

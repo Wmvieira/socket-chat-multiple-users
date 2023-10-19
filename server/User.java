@@ -5,7 +5,7 @@ public class User {
     public String nickName;
     public ServerThread serverThread;
 
-    private static List<User> connectedUsers = new ArrayList<User>();
+    public static List<User> connectedUsers = new ArrayList<User>();
 
     public User(ServerThread serverThread) {
         this.serverThread = serverThread;
