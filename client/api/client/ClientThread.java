@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import api.message.*;
+import client.Client;
 
 public class ClientThread implements Runnable {
     private Socket s;
@@ -28,8 +29,13 @@ public class ClientThread implements Runnable {
     public void run() {
         try {
             while (true) {
-                String msg = inSock.readLine();
-                System.out.println(msg);
+                Message msg = Message.fromString(inSock.readLine());
+                System.out.println(msg.toMessageString());
+
+                if(msg instanceof GetUsersMessage ) {
+                    Client.names = ((GetUsersMessage) msg).usernames;
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

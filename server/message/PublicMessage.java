@@ -1,8 +1,8 @@
 package message;
 
 public class PublicMessage extends Message {
-    private String from;
-    private String content;
+    public String from;
+    public String content;
 
     public PublicMessage(String from, String content) {
         super(MessageType.PUBLIC_MESSAGE);

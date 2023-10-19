@@ -2,29 +2,43 @@ package client;
 
 import api.client.ClientThread;
 import api.message.LoginMessage;
+import api.message.PrivateMessage;
+import api.message.PublicMessage;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
     ClientThread clientThread;
     String name;
+    String selected = "teste 2";
+    public static List<String> names;
 
     public Client(String name) {
         this.name = name;
         startClient();
     }
 
-    public void Login() {
+    public void login() {
         clientThread.sendMessage(new LoginMessage(name));
+    }
+
+    public void publicMessage(String content) {
+        clientThread.sendMessage(new PublicMessage(name, content));
+    }
+
+    public void privateMessage(String content) {
+        clientThread.sendMessage(new PrivateMessage(name, selected, content));
     }
 
     public void startClient() {
         try {
             Socket s = new Socket("localhost", 8084);
             this.clientThread = new ClientThread(s);
-            Login();
+            login();
 
             JFrame chatWindow = createChatPage();
             chatWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +80,8 @@ public class Client {
         sendMessageButton.addActionListener((ActionEvent e) -> {
             String sentMessage = messageField.getText();
             if (!sentMessage.isEmpty()) {
-                // Handle sending the message here
+                if(selected != null) privateMessage(sentMessage);
+                else publicMessage(sentMessage);
             }
         });
 

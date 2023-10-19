@@ -1,4 +1,4 @@
-import message.GetUsersMessage;
+import message.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,7 +23,7 @@ public class ServerThread implements Runnable {
         for (User user : User.connectedUsers) {
             userNames.add(user.nickName);
         }
-        sendMsgs(new GetUsersMessage(userNames).getMessageDetails());
+        sendMsgs(new GetUsersMessage(userNames).toMessageString());
     }
 
     public void sendMsgs(String msg) {
@@ -36,12 +36,39 @@ public class ServerThread implements Runnable {
     public void run() {
         try {
             while (true) {
-                String msg = in.readLine();
-                System.out.println(msg);
+                Message msg = Message.fromString(in.readLine());
+                System.out.println(msg.toMessageString());
 
-                sendMsgs(msg);
-                AllUsers();
+                if(msg instanceof LoginMessage) {
+                    for (User user : User.connectedUsers) {
+                        if (user.serverThread.equals(this)) {
+                            user.nickName = ((LoginMessage)msg).username;
+                            break;
+                        }
+                    }
+                    for (User user : User.connectedUsers) {
+                        user.serverThread.AllUsers();
+                    }
+                }
+
+                if(msg instanceof PublicMessage) {
+                    for (User user : User.connectedUsers) {
+                        if(!user.nickName.equals(((PublicMessage)msg).from)) {
+                            user.serverThread.sendMsgs(msg.toMessageString());
+                        }
+                    }
+                }
+
+                if(msg instanceof PrivateMessage) {
+                    for (User user : User.connectedUsers) {
+                        if(user.nickName.equals(((PrivateMessage)msg).to)) {
+                            user.serverThread.sendMsgs(msg.toMessageString());
+                        }
+                    }
+                }
+
             }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

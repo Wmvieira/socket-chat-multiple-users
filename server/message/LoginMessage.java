@@ -1,7 +1,7 @@
 package message;
 
 public class LoginMessage extends Message {
-    private String username;
+    public String username;
 
     public LoginMessage(String username) {
         super(MessageType.LOGIN);

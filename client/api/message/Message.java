@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Message {
-    private MessageType messageType;
+    public MessageType messageType;
 
     public Message(MessageType messageType) {
         this.messageType = messageType;

@@ -3,7 +3,7 @@ package api.message;
 import java.util.List;
 
 public class GetUsersMessage extends Message {
-    private List<String> usernames;
+    public List<String> usernames;
 
     public GetUsersMessage(List<String> usernames) {
         super(MessageType.GET_USERS);

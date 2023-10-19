@@ -1,9 +1,9 @@
 package message;
 
 public class PrivateMessage extends Message {
-    private String from;
-    private String to;
-    private String content;
+    public String from;
+    public String to;
+    public String content;
 
     public PrivateMessage(String from, String to, String content) {
         super(MessageType.PRIVATE_MESSAGE);
